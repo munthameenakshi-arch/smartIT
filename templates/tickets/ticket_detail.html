@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Ticket Details - SmartIT</title>
+
+    <style>
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+        }
+
+        .navbar {
+            background: #1e3a8a;
+            color: white;
+            padding: 18px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .nav-links a {
+            color: white;
+            text-decoration: none;
+            margin-left: 25px;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+        }
+
+        .ticket-card {
+            background: white;
+            padding: 35px;
+            border-radius: 12px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-top: 0;
+        }
+
+        .ticket-id {
+            color: #777;
+            margin-bottom: 25px;
+        }
+
+        .detail {
+            margin: 20px 0;
+        }
+
+        .detail strong {
+            display: block;
+            color: #374151;
+            margin-bottom: 8px;
+        }
+
+        .description {
+            background: #f9fafb;
+            padding: 15px;
+            border-radius: 8px;
+            line-height: 1.6;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+
+        .open {
+            background: #fee2e2;
+            color: #b91c1c;
+        }
+
+        .resolved {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .in-progress {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .critical {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .high {
+            background: #ffedd5;
+            color: #c2410c;
+        }
+
+        .medium {
+            background: #fef3c7;
+            color: #a16207;
+        }
+
+        .low {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 12px 20px;
+            border-radius: 6px;
+            text-decoration: none;
+            color: white;
+            font-weight: bold;
+            border: none;
+            cursor: pointer;
+        }
+
+        .update-btn {
+            background: #2563eb;
+        }
+
+        .resolve-btn {
+            background: #16a34a;
+        }
+        .delete-btn {
+    background: #dc2626;
+}
+
+        .back-btn {
+            background: #6b7280;
+        }
+
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .comments-section {
+    margin-top: 30px;
+    background: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+}
+
+.comments-section h2 {
+    color: #1e3a8a;
+    margin-top: 0;
+}
+
+.comment {
+    background: #f9fafb;
+    padding: 15px;
+    margin: 15px 0;
+    border-radius: 8px;
+}
+
+.comment-user {
+    font-weight: bold;
+    color: #1e3a8a;
+}
+
+.comment-date {
+    color: #777;
+    font-size: 12px;
+}
+
+.comment-form textarea {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #d1d5db;
+    border-radius: 6px;
+    resize: vertical;
+    font-family: Arial, sans-serif;
+}
+
+.comment-form button {
+    margin-top: 10px;
+    background: #1e3a8a;
+}
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="navbar">
+
+        <div class="logo">
+            SmartIT
+        </div>
+
+        <div class="nav-links">
+
+            <a href="{% url 'dashboard' %}">
+                Dashboard
+            </a>
+
+            <a href="{% url 'create_ticket' %}">
+                Create Ticket
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <div class="container">
+
+        <div class="ticket-card">
+
+            <h1>
+                {{ ticket.title }}
+            </h1>
+
+            <p class="ticket-id">
+                Ticket ID: #{{ ticket.id }}
+            </p>
+
+
+            <div class="detail">
+
+                <strong>
+                    Description
+                </strong>
+
+                <div class="description">
+                    {{ ticket.description }}
+                </div>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Priority
+                </strong>
+
+                <span class="badge {{ ticket.priority|lower }}">
+                    {{ ticket.priority }}
+                </span>
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Status
+                </strong>
+                <p>
+    <strong>Assigned To:</strong>
+
+    {% if ticket.assigned_to %}
+        {{ ticket.assigned_to.username }}
+    {% else %}
+        Not Assigned
+    {% endif %}
+</p>
+
+                {% if ticket.status == "Open" %}
+
+                    <span class="badge open">
+                        {{ ticket.status }}
+                    </span>
+
+                {% elif ticket.status == "Resolved" %}
+
+                    <span class="badge resolved">
+                        {{ ticket.status }}
+                    </span>
+
+                {% else %}
+
+                    <span class="badge in-progress">
+                        {{ ticket.status }}
+                    </span>
+
+                {% endif %}
+
+            </div>
+
+
+            <div class="detail">
+
+                <strong>
+                    Created At
+                </strong>
+
+                {{ ticket.created_at }}
+
+            </div>
+            <div class="buttons">
+
+    <a
+        href="{% url 'update_ticket' ticket.id %}"
+        class="btn update-btn"
+    >
+        Update Ticket
+    </a>
+
+
+    <form
+        method="POST"
+        action="{% url 'delete_ticket' ticket.id %}"
+        style="display: inline;"
+    >
+
+        {% csrf_token %}
+
+        <button
+            type="submit"
+            class="btn delete-btn"
+            onclick="return confirm('Are you sure you want to delete this ticket?');"
+        >
+            Delete Ticket
+        </button>
+
+    </form>
+
+
+    {% if ticket.status != "Resolved" %}
+
+        <a
+            href="{% url 'resolve_ticket' ticket.id %}"
+            class="btn resolve-btn"
+        >
+            Mark as Resolved
+        </a>
+
+    {% endif %}
+
+
+    <a
+        href="{% url 'dashboard' %}"
+        class="btn back-btn"
+    >
+        Back to Dashboard
+    </a>
+
+</div>
+
+
+
+               </div>
+
+
+        <!-- COMMENTS SECTION -->
+
+        <div class="comments-section">
+
+            <h2>
+                Comments
+            </h2>
+
+
+            {% for comment in ticket.comments.all %}
+
+                <div class="comment">
+
+                    <div class="comment-user">
+                        {{ comment.user.username }}
+                    </div>
+
+                    <div class="comment-date">
+                        {{ comment.created_at }}
+                    </div>
+
+                    <p>
+                        {{ comment.text }}
+                    </p>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    No comments yet. Be the first to comment!
+                </p>
+
+            {% endfor %}
+
+
+            <hr>
+
+
+            <h3>
+                Add a Comment
+            </h3>
+
+
+            <form
+                method="POST"
+                class="comment-form"
+            >
+
+                {% csrf_token %}
+
+                {{ form.text }}
+
+                <button
+                    type="submit"
+                    class="btn"
+                >
+                    Add Comment
+                </button>
+
+            </form>
+
+               </div>
+
+
+        <!-- TICKET ACTIVITY HISTORY -->
+
+        <div class="comments-section">
+
+            <h2>
+                Ticket Activity
+            </h2>
+
+            {% for activity in ticket.activities.all %}
+
+                <div class="comment">
+
+                    <div class="comment-user">
+                        {{ activity.user.username }}
+                    </div>
+
+                    <div class="comment-date">
+                        {{ activity.created_at }}
+                    </div>
+
+                    <p>
+                        {{ activity.action }}
+                    </p>
+
+                </div>
+
+            {% empty %}
+
+                <p>
+                    No activity yet.
+                </p>
+
+            {% endfor %}
+
+        </div>
+
+
+    </div>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Ticket Details</title>
+</head>
+
+<body>
+
+    <h1>Ticket Details</h1>
+
+    <h2>{{ ticket.title }}</h2>
+
+    <p>
+        Description:
+        {{ ticket.description }}
+    </p>
+
+    <p>
+        Priority:
+        {{ ticket.priority }}
+    </p>
+
+    <p>
+        Status:
+        {{ ticket.status }}
+    </p>
+
+    <p>
+        Created At:
+        {{ ticket.created_at }}
+    </p>
+
+    <br>
+
+    <a href="{% url 'dashboard' %}">
+        Back to Dashboard
+    </a>
+
+</body>
+
+</html>

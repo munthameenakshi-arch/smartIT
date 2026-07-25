@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>SmartIT Helpdesk</title>
+    <style>
+        body{
+            font-family: Arial, sans-serif;
+            background:#f4f6f9;
+            text-align:center;
+            margin-top:100px;
+        }
+
+        h1{
+            color:#0d6efd;
+        }
+
+        .btn{
+            display:inline-block;
+            margin:10px;
+            padding:12px 25px;
+            background:#0d6efd;
+            color:white;
+            text-decoration:none;
+            border-radius:8px;
+        }
+
+        .btn:hover{
+            background:#084298;
+        }
+    </style>
+</head>
+<body>
+
+<h1>SmartIT Helpdesk & Asset Management</h1>
+
+<p>Welcome to the IT Support Portal.</p>
+
+<a href="{% url 'register' %}" class="btn">Register</a>
+
+<a href="{% url 'login' %}" class="btn">Login</a>
+CTRL + C
+python manage.py runserver
+</body>
+</html>

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <title>Update Ticket</title>
+
+    <style>
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f4f6f9;
+            padding: 40px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        h1 {
+            color: #1e3a8a;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin-top: 20px;
+            margin-bottom: 8px;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 16px;
+        }
+
+        button {
+            margin-top: 25px;
+            padding: 12px 25px;
+            background: #2563eb;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        .back-link {
+            display: block;
+            margin-top: 20px;
+            color: #1e3a8a;
+            text-decoration: none;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>
+            Update Ticket
+        </h1>
+
+        <h2>
+            {{ ticket.title }}
+        </h2>
+
+        <form method="POST">
+
+            {% csrf_token %}
+
+            <label>
+                Priority
+            </label>
+
+            <select name="priority">
+
+                <option value="Low"
+                    {% if ticket.priority == "Low" %}selected{% endif %}>
+                    Low
+                </option>
+
+                <option value="Medium"
+                    {% if ticket.priority == "Medium" %}selected{% endif %}>
+                    Medium
+                </option>
+
+                <option value="High"
+                    {% if ticket.priority == "High" %}selected{% endif %}>
+                    High
+                </option>
+
+                <option value="Critical"
+                    {% if ticket.priority == "Critical" %}selected{% endif %}>
+                    Critical
+                </option>
+
+            </select>
+
+
+            <label>
+                Status
+            </label>
+
+            <select name="status">
+
+                <option value="Open"
+                    {% if ticket.status == "Open" %}selected{% endif %}>
+                    Open
+                </option>
+
+                <option value="In Progress"
+                    {% if ticket.status == "In Progress" %}selected{% endif %}>
+                    In Progress
+                </option>
+
+                <option value="Resolved"
+                    {% if ticket.status == "Resolved" %}selected{% endif %}>
+                    Resolved
+                </option>
+
+                <option value="Closed"
+                    {% if ticket.status == "Closed" %}selected{% endif %}>
+                    Closed
+                </option>
+
+            </select>
+
+
+            <button type="submit">
+                Save Changes
+            </button>
+
+        </form>
+
+
+        <a
+            href="{% url 'ticket_detail' ticket.id %}"
+            class="back-link"
+        >
+            ← Back to Ticket Details
+        </a>
+
+    </div>
+
+</body>
+
+</html>
