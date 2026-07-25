@@ -23,9 +23,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = "django-insecure-c)+sswskd#3j5ywifa6460l##6^erp=q4^18x@(ptp65(@ntgp"
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['smartit.onrender.com', 'localhost', '127.0.0.1']
 
 
 # Application definition
