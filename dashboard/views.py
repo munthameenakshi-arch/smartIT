@@ -61,6 +61,38 @@ def dashboard(request):
         assigned_to=request.user
     ).order_by("-created_at")
 
+    # Statistics
+    total_tickets = tickets.count()
+
+    open_tickets = tickets.filter(
+        status="Open"
+    ).count()
+
+    in_progress_tickets = tickets.filter(
+        status="In Progress"
+    ).count()
+
+    resolved_tickets = tickets.filter(
+        status="Resolved"
+    ).count()
+
+    # Priority statistics
+    low_tickets = tickets.filter(
+        priority="Low"
+    ).count()
+
+    medium_tickets = tickets.filter(
+        priority="Medium"
+    ).count()
+
+    high_tickets = tickets.filter(
+        priority="High"
+    ).count()
+
+    critical_tickets = tickets.filter(
+        priority="Critical"
+    ).count()
+
     context = {
 
         "tickets": tickets,
@@ -73,20 +105,37 @@ def dashboard(request):
 
         "selected_priority": selected_priority,
 
-        "total_tickets": tickets.count(),
+        "total_tickets": total_tickets,
 
-        "open_tickets": tickets.filter(
-            status="Open"
-        ).count(),
+        "open_tickets": open_tickets,
 
-        "in_progress_tickets": tickets.filter(
-            status="In Progress"
-        ).count(),
+        "in_progress_tickets": in_progress_tickets,
 
-        "resolved_tickets": tickets.filter(
-            status="Resolved"
-        ).count(),
+        "resolved_tickets": resolved_tickets,
 
+        # Priority counts
+        "low_tickets": low_tickets,
+
+        "medium_tickets": medium_tickets,
+
+        "high_tickets": high_tickets,
+
+        "critical_tickets": critical_tickets,
+        "low_tickets": tickets.filter(
+    priority="Low"
+).count(),
+
+"medium_tickets": tickets.filter(
+    priority="Medium"
+).count(),
+
+"high_tickets": tickets.filter(
+    priority="High"
+).count(),
+
+"critical_tickets": tickets.filter(
+    priority="Critical"
+).count(),
     }
 
     return render(
