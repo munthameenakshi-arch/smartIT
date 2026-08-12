@@ -20,40 +20,71 @@
             color: #1f2937;
         }
 
-        /* NAVBAR */
+      /* ================= PROFESSIONAL NAVBAR ================= */
 
-        .navbar {
-            background: #1e3a8a;
-            color: white;
-            padding: 18px 40px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+.navbar {
+    background: #1e3a8a;
+    color: white;
+    padding: 16px 35px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+.role-badge {
+    background: white !important;
+    color: #1e3a8a !important;
+    padding: 8px 14px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: bold;
+    display: inline-block;
+}
 
-        .logo {
-            font-size: 24px;
-            font-weight: bold;
-        }
+.logo {
+    font-size: 25px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+}
 
-        .nav-links {
-            display: flex;
-            align-items: center;
-            gap: 25px;
-        }
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
-        .nav-links a {
-            color: white;
-            text-decoration: none;
-        }
+.nav-links a {
+    color: white;
+    text-decoration: none;
+    padding: 9px 14px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: 0.2s;
+}
 
-        .logout-btn {
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            font-size: 16px;
-        }
+.nav-links a:hover {
+    background: rgba(255, 255, 255, 0.15);
+}
+
+.logout-btn {
+    background: #dc2626;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 9px 15px;
+    border-radius: 7px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s;
+}
+
+.logout-btn:hover {
+    background: #b91c1c;
+}
 
         /* MAIN */
 
@@ -385,6 +416,13 @@
         <a href="{% url 'create_ticket' %}">
             Create Ticket
         </a>
+        <span class="role-badge">
+    {% if user.is_staff %}
+        👨‍💼 Admin
+    {% else %}
+        👤 Employee
+    {% endif %}
+</span>
 
         {% if user.is_staff %}
 
@@ -403,6 +441,7 @@
             </button>
 
         </form>
+
 
     </div>
 
@@ -767,206 +806,210 @@
     </div>
 
 
-    <!-- SUBMITTED TICKETS -->
+<!-- ================= SUBMITTED TICKETS ================= -->
 
-    <div class="section">
+<div class="section">
 
+    <div class="section-header">
 
-        <div class="section-header">
+        <h2>
+            📋 Submitted Tickets
+        </h2>
 
-            <h2>
-                📋 Submitted Tickets
-            </h2>
-
-
-            <a
-                href="{% url 'create_ticket' %}"
-                class="create-btn"
-            >
-                + New Ticket
-            </a>
-
-        </div>
-
-
-        {% if tickets %}
-
-
-            <div class="table-wrapper">
-
-                <table class="ticket-table">
-
-
-                    <thead>
-
-                        <tr>
-
-                            <th>
-                                Ticket
-                            </th>
-
-                            <th>
-                                Priority
-                            </th>
-
-                            <th>
-                                Status
-                            </th>
-
-                            <th>
-                                Created
-                            </th>
-
-                            <th>
-                                Action
-                            </th>
-
-                        </tr>
-
-                    </thead>
-
-
-                    <tbody>
-
-
-                        {% for ticket in tickets %}
-
-                        <tr>
-
-
-                            <td>
-
-                                <a
-                                    href="{% url 'ticket_detail' ticket.id %}"
-                                    class="ticket-title"
-                                >
-                                    {{ ticket.title }}
-                                </a>
-
-                            </td>
-
-
-                            <td>
-
-                                {% if ticket.priority == "Low" %}
-
-                                    <span class="priority-low">
-                                        Low
-                                    </span>
-
-                                {% elif ticket.priority == "Medium" %}
-
-                                    <span class="priority-medium">
-                                        Medium
-                                    </span>
-
-                                {% elif ticket.priority == "High" %}
-
-                                    <span class="priority-high">
-                                        High
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="priority-critical">
-                                        Critical
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-
-                            <td>
-
-                                {% if ticket.status == "Open" %}
-
-                                    <span class="badge status-open">
-                                        Open
-                                    </span>
-
-                                {% elif ticket.status == "In Progress" %}
-
-                                    <span class="badge status-progress">
-                                        In Progress
-                                    </span>
-
-                                {% elif ticket.status == "Resolved" %}
-
-                                    <span class="badge status-resolved">
-                                        Resolved
-                                    </span>
-
-                                {% else %}
-
-                                    <span class="badge status-closed">
-                                        Closed
-                                    </span>
-
-                                {% endif %}
-
-                            </td>
-
-
-                            <td>
-
-                                {{ ticket.created_at|date:"d M Y" }}
-
-                            </td>
-
-
-                            <td>
-
-
-                                <a
-                                    href="{% url 'ticket_detail' ticket.id %}"
-                                    class="view-btn"
-                                >
-                                    View
-                                </a>
-
-
-                                {% if ticket.status != "Resolved" %}
-
-                                    <a
-                                        href="{% url 'resolve_ticket' ticket.id %}"
-                                        class="resolve-btn"
-                                    >
-                                        Resolve
-                                    </a>
-
-                                {% endif %}
-
-
-                            </td>
-
-
-                        </tr>
-
-                        {% endfor %}
-
-
-                    </tbody>
-
-
-                </table>
-
-            </div>
-
-
-        {% else %}
-
-
-            <div class="empty">
-                No tickets found.
-            </div>
-
-
-        {% endif %}
-
+        <a
+            href="{% url 'create_ticket' %}"
+            class="create-btn"
+        >
+            + New Ticket
+        </a>
 
     </div>
 
+    {% if tickets %}
+
+    <div class="table-wrapper">
+
+        <table class="ticket-table">
+
+            <thead>
+
+                <tr>
+                    <th>ID</th>
+                    <th>Ticket</th>
+                    <th>Assigned To</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Created</th>
+                    <th>Action</th>
+                </tr>
+
+            </thead>
+
+            <tbody>
+
+                {% for ticket in tickets %}
+
+                <tr>
+
+                    <!-- TICKET ID -->
+
+                    <td>
+                        <strong>
+                            #{{ ticket.id }}
+                        </strong>
+                    </td>
+
+
+                    <!-- TITLE -->
+
+                    <td>
+
+                        <a
+                            href="{% url 'ticket_detail' ticket.id %}"
+                            class="ticket-title"
+                        >
+                            {{ ticket.title }}
+                        </a>
+
+                    </td>
+
+
+                    <!-- ASSIGNED TO -->
+
+                    <td>
+
+                        {% if ticket.assigned_to %}
+
+                            👤 {{ ticket.assigned_to.username }}
+
+                        {% else %}
+
+                            <span style="color:#9ca3af;">
+                                Unassigned
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- PRIORITY -->
+
+                    <td>
+
+                        {% if ticket.priority == "Low" %}
+
+                            <span class="priority-low">
+                                Low
+                            </span>
+
+                        {% elif ticket.priority == "Medium" %}
+
+                            <span class="priority-medium">
+                                Medium
+                            </span>
+
+                        {% elif ticket.priority == "High" %}
+
+                            <span class="priority-high">
+                                High
+                            </span>
+
+                        {% else %}
+
+                            <span class="priority-critical">
+                                Critical
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- STATUS -->
+
+                    <td>
+
+                        {% if ticket.status == "Open" %}
+
+                            <span class="badge status-open">
+                                Open
+                            </span>
+
+                        {% elif ticket.status == "In Progress" %}
+
+                            <span class="badge status-progress">
+                                In Progress
+                            </span>
+
+                        {% elif ticket.status == "Resolved" %}
+
+                            <span class="badge status-resolved">
+                                Resolved
+                            </span>
+
+                        {% else %}
+
+                            <span class="badge status-closed">
+                                Closed
+                            </span>
+
+                        {% endif %}
+
+                    </td>
+
+
+                    <!-- CREATED DATE -->
+
+                    <td>
+
+                        {{ ticket.created_at|date:"d M Y" }}
+
+                    </td>
+
+
+                    <!-- ACTION -->
+
+                    <td>
+
+                        <a
+                            href="{% url 'ticket_detail' ticket.id %}"
+                            class="view-btn"
+                        >
+                            View
+                        </a>
+
+
+                        {% if ticket.status != "Resolved" %}
+
+                            <a
+                                href="{% url 'resolve_ticket' ticket.id %}"
+                                class="resolve-btn"
+                            >
+                                Resolve
+                            </a>
+
+                        {% endif %}
+
+                    </td>
+
+                </tr>
+
+                {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+    {% else %}
+
+        <div class="empty">
+            No tickets found.
+        </div>
+
+    {% endif %}
 
 </div>
 

@@ -94,7 +94,6 @@ def ticket_detail(request, ticket_id):
         }
     )
 
-
 @login_required
 def resolve_ticket(request, ticket_id):
 
@@ -103,14 +102,20 @@ def resolve_ticket(request, ticket_id):
         id=ticket_id
     )
 
-    ticket.status = "Resolved"
+    old_status = ticket.status
 
+    ticket.status = "Resolved"
     ticket.save()
 
-    return redirect(
-        "dashboard"
-    )
+    if old_status != "Resolved":
 
+        TicketActivity.objects.create(
+            ticket=ticket,
+            user=request.user,
+            action=f"Status changed from {old_status} to Resolved"
+        )
+
+    return redirect("dashboard")
 
 @login_required
 def update_ticket(request, ticket_id):
@@ -120,9 +125,8 @@ def update_ticket(request, ticket_id):
         id=ticket_id
     )
 
-    # Only admin or the assigned employee can update the ticket
+    # Only admin or assigned employee can update
     if not request.user.is_staff and ticket.assigned_to != request.user:
-
         return redirect(
             "ticket_detail",
             ticket_id=ticket.id
@@ -130,15 +134,33 @@ def update_ticket(request, ticket_id):
 
     if request.method == "POST":
 
-        ticket.priority = request.POST.get(
-            "priority"
-        )
+        old_status = ticket.status
+        old_priority = ticket.priority
 
-        ticket.status = request.POST.get(
-            "status"
-        )
+        new_priority = request.POST.get("priority")
+        new_status = request.POST.get("status")
 
+        ticket.priority = new_priority
+        ticket.status = new_status
         ticket.save()
+
+        # Record status change
+        if old_status != new_status:
+
+            TicketActivity.objects.create(
+                ticket=ticket,
+                user=request.user,
+                action=f"Status changed from {old_status} to {new_status}"
+            )
+
+        # Record priority change
+        if old_priority != new_priority:
+
+            TicketActivity.objects.create(
+                ticket=ticket,
+                user=request.user,
+                action=f"Priority changed from {old_priority} to {new_priority}"
+            )
 
         return redirect(
             "ticket_detail",
@@ -152,6 +174,7 @@ def update_ticket(request, ticket_id):
             "ticket": ticket
         }
     )
+
 
 
 @login_required
