@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Register</title>
+    <title>Register - SmartIT</title>
 </head>
+
 <body>
 
-<h2>User Registration</h2>
+    <h2>Create SmartIT Account</h2>
 
-<form method="POST">
-    {% csrf_token %}
-    {{ form.as_p }}
+    <form method="POST">
+        {% csrf_token %}
 
-    <button type="submit">Register</button>
-</form>
+        {{ form.as_p }}
 
-<a href="/">Back to Home</a>
+        <button type="submit">Register</button>
+    </form>
+
+    <p>
+        Already have an account?
+        <a href="{% url 'login' %}">Login</a>
+    </p>
 
 </body>
 </html>
