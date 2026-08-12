@@ -670,6 +670,118 @@
         </a>
 
     </div>
+    <!-- CHARTS -->
+
+<div style="
+    display:grid;
+    grid-template-columns:repeat(2, 1fr);
+    gap:25px;
+    margin:0 35px 35px 35px;
+">
+
+    <!-- Ticket Status Chart -->
+    <div style="
+        background:white;
+        padding:25px;
+        border-radius:12px;
+        border:1px solid #e5e7eb;
+    ">
+        <h2 style="margin-bottom:20px;">
+            Ticket Status
+        </h2>
+
+        <canvas id="statusChart"></canvas>
+    </div>
+
+
+    <!-- Ticket Summary -->
+    <div style="
+        background:white;
+        padding:25px;
+        border-radius:12px;
+        border:1px solid #e5e7eb;
+    ">
+        <h2 style="margin-bottom:20px;">
+            Ticket Summary
+        </h2>
+
+        <div style="font-size:16px; line-height:2.5;">
+
+            <div>
+                🔴 Open:
+                <strong>{{ open_tickets }}</strong>
+            </div>
+
+            <div>
+                🟡 In Progress:
+                <strong>{{ in_progress_tickets }}</strong>
+            </div>
+
+            <div>
+                🟢 Resolved:
+                <strong>{{ resolved_tickets }}</strong>
+            </div>
+
+            <div>
+                📊 Total:
+                <strong>{{ total_tickets }}</strong>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+
+<!-- CHART.JS -->
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+
+const ctx = document.getElementById('statusChart');
+
+new Chart(ctx, {
+
+    type: 'doughnut',
+
+    data: {
+
+        labels: [
+            'Open',
+            'In Progress',
+            'Resolved'
+        ],
+
+        datasets: [{
+
+            data: [
+                {{ open_tickets }},
+                {{ in_progress_tickets }},
+                {{ resolved_tickets }}
+            ]
+
+        }]
+
+    },
+
+    options: {
+
+        responsive: true,
+
+        plugins: {
+
+            legend: {
+                position: 'bottom'
+            }
+
+        }
+
+    }
+
+});
+
+</script>
 
 </body>
 
