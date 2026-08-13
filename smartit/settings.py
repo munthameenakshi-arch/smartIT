@@ -26,6 +26,9 @@ SECRET_KEY = "django-insecure-c)+sswskd#3j5ywifa6460l##6^erp=q4^18x@(ptp65(@ntgp
 DEBUG = False
 
 ALLOWED_HOSTS = ['smartit.onrender.com', 'localhost', '127.0.0.1']
+CSRF_TRUSTED_ORIGINS = [
+    'https://smartit.onrender.com',
+]
 
 
 # Application definition
