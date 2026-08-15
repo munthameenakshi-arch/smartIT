@@ -4,7 +4,6 @@ __pycache__/
 *.pyo
 
 # Django
-db.sqlite3
 *.log
 
 # Virtual environment
@@ -18,3 +17,4 @@ env/
 # IDE
 .vscode/
 .idea/
+staticfiles/
